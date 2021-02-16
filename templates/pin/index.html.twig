@@ -12,5 +12,7 @@
                 <p>{{ pin.description }}</p>
             </article>
         {% endfor %}
+    {% else %}
+        <h1>No pins</h1>
     {% endif %}
 {% endblock %}
