@@ -74,7 +74,7 @@ class PinController extends AbstractController
     }
 
     /**
-     * @Route("/pin/edit/{id<\d+>}", name="app_pin_edit", methods="GET|POST")
+     * @Route("/pin/{id<\d+>}/edit", name="app_pin_edit", methods="GET|PUT")
      */
     public function edit(Pin $pin, Request $req): Response
     {
@@ -96,7 +96,16 @@ class PinController extends AbstractController
                 'pin' => $pin]
             );
         }   
-
-        
     }
+
+    /**
+     * @Route("/pin/{id<\d+>}/delete", name="app_pin_delete", methods="DELETE")
+     */
+    public function delete(Pin $pin): Response
+    {
+        $this->em->remove($pin);
+        $this->em->flush();
+        return $this->redirectToRoute('app_home');
+    }
+    
 }

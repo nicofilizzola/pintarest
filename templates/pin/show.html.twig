@@ -7,6 +7,14 @@
         <h1>{{ pin.title }}</h1>
         <p>{{ pin.description }}</p>
     </article>
-    <a href="{{ path('app_home') }}">Return</a>
-    <a href="{{ path('app_pin_edit', {id: pin.id}) }}">Edit</a>
+    <p>
+        <a href="{{ path('app_home') }}">Return</a> | 
+        <a href="{{ path('app_pin_edit', {id: pin.id}) }}">Edit</a> | 
+        <a href="#" onclick="event.preventDefault(); confirm('Are you sure about that?') && document.querySelector('#js-delete-pin').submit();">Delete</a>
+    </p>
+
+    <form id="js-delete-pin" display="none" action="{{ path('app_pin_delete', {id: pin.id}) }}" method="post">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+    
 {% endblock %}
