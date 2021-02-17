@@ -7,12 +7,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PinRepository;
 use App\Entity\Pin;
+use App\Form\PinType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 
 class PinController extends AbstractController
 {
+    private $em, $req;
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @Route("/", name="app_home", methods="GET")
      */
@@ -39,20 +46,23 @@ class PinController extends AbstractController
     /**
      * @Route("/pin/create", name="app_pin_create", methods="GET|POST")
      */
-    public function create(Request $req, EntityManagerInterface $em): Response
+    public function create(Request $req): Response
     {
         $pin = new Pin;
-        $form = $this->createFormBuilder($pin)
+        /*$form = $this->createFormBuilder($pin)
             ->add('title')
             ->add('description')
+            ->setMethod('PUT')
+            ->setAction('whatever.com')
             ->getForm()
-        ;
+        ;*/
+        $form = $this->createForm(PinType::class, $pin);
         $form->handleRequest($req);
 
         if($form->isSubmitted() && $form->isValid()){
             $data = $form->getData();
-            $em->persist($pin);
-            $em->flush();
+            $this->em->persist($pin);
+            $this->em->flush();
             
             return $this->redirectToRoute('app_home');
         } else {
@@ -66,19 +76,17 @@ class PinController extends AbstractController
     /**
      * @Route("/pin/edit/{id<\d+>}", name="app_pin_edit", methods="GET|POST")
      */
-    public function edit(Pin $pin, EntityManagerInterface $em, Request $req): Response
+    public function edit(Pin $pin, Request $req): Response
     {
-        $form = $this->createFormBuilder($pin)
-            ->add('title')
-            ->add('description')
-            ->getForm()
-        ;
+        $form = $this->createForm(PinType::class, $pin, [
+            'method' => 'PUT'
+        ]);
         $form->handleRequest($req);
 
         if($form->isSubmitted() && $form->isValid()){
             $data = $form->getData();
-            $em->persist($pin);
-            $em->flush();
+            $this->em->persist($pin);
+            $this->em->flush();
             
             return $this->redirectToRoute('app_home');
         } else {
