@@ -15,7 +15,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 
 class PinController extends AbstractController
 {
-    private $em, $req;
+    private $em;
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
@@ -100,7 +100,7 @@ class PinController extends AbstractController
     }
 
     /**
-     * @Route("/pin/{id<\d+>}/delete", name="app_pin_delete", methods="DELETE")
+     * @Route("/pin/{id<\d+>}", name="app_pin_delete", methods="DELETE")
      */
     public function delete(Pin $pin, Request $req): Response
     {
