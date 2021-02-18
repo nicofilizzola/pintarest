@@ -9,7 +9,9 @@
         {% for pin in allPins %}
             <article>
                 <h2><a href="{{ path('app_pin_show', {id: pin.id}) }}">{{ pin.title }}</a></h2>
-                <p>{{ pin.description }}</p>
+                <p>{{ pin.description|u.truncate(20, '...', false) }}</p>
+                <p>Submitted {{ pin.createdAt|date('d/m/Y') }} at {{ pin.createdAt|date('h:i') }}.</p>
+                {#<p>Submitted {{pin.createdAt|ago}}</p> // using knplabs/knp-time-bundle #}
             </article>
         {% endfor %}
     {% else %}
