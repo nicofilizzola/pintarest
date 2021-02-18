@@ -20,6 +20,7 @@
                 <li><a href="{{ path('app_pin_create') }}">New</a></li>
             </ul>
         </nav>
+        {% include "layouts/partials/_flashMessages.html.twig" %}
         {% block body %}{% endblock %}
     </body>
 </html>
