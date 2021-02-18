@@ -14,6 +14,7 @@
     </p>
 
     <form id="js-delete-pin" display="none" action="{{ path('app_pin_delete', {id: pin.id}) }}" method="post">
+        <input type="hidden" name="_token" value="{{ csrf_token('app_pin_delete' ~ pin.id) }}">
         <input type="hidden" name="_method" value="DELETE">
     </form>
     
