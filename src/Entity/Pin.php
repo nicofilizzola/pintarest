@@ -46,9 +46,10 @@ class Pin
     private $imagePath;
 
     /**
+     * @Assert\NotBlank(message="No image? What do you think you're doing exactly?")
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="pin_image", fileNameProperty="imagePath")
+     * @Vich\UploadableField(mapping="pin_path", fileNameProperty="imagePath")
      * 
      * @var File|null
      */
@@ -88,7 +89,7 @@ class Pin
         return $this->imagePath;
     }
 
-    public function setImagePath(string $imagePath): self
+    public function setImagePath(?string $imagePath): self
     {
         $this->imagePath = $imagePath;
 
