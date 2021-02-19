@@ -37,6 +37,11 @@ class Pin
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $imagePath;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +67,18 @@ class Pin
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getImagePath(): ?string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(string $imagePath): self
+    {
+        $this->imagePath = $imagePath;
 
         return $this;
     }
