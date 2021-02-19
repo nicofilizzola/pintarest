@@ -1,0 +1,10 @@
+@import "~bootstrap/scss/bootstrap";
+@import 'base/fonts';
+@import 'utils/variables';
+
+body {
+    background-color: $white;
+    * {
+        font-family: $fontPrimary;
+    }
+}
