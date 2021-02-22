@@ -1,0 +1,11 @@
+.pin{
+    img{
+        &:hover{
+            transform: scale(1.025);
+        }
+        transition: $defaultTransition;
+    }
+    .h5{
+        transition: $defaultTransition;
+    }
+}

@@ -5,18 +5,29 @@
 {% block body %}
     <div class="container mt-5">
         {% if allPins|length > 0 %}
-            <h1>{{ is_plural(allPins|length, 'Pin') }}</h1>
-
-            {% for pin in allPins %}
-                <article>
-                    <h2><a href="{{ path('app_pin_show', {id: pin.id}) }}">{{ pin.title }}</a></h2>
-                    <p>{{ pin.description|u.truncate(20, '...', false) }}</p>
-                    <p>Submitted {{ pin.createdAt|date('d/m/Y') }} at {{ pin.createdAt|date('h:i') }}.</p>
-                    {#<p>Submitted {{pin.createdAt|ago}}</p> // using knplabs/knp-time-bundle #}
-                </article>
+            <h1 class="text-muted text-center">{{ is_plural(allPins|length, 'Pin') }}</h1>
+            <div class="mt-3">
+            {% for row in allPins|batch(3) %}
+                <div class="row">
+                    {% for pin in allPins %}
+                        <div class="col-md-4">
+                            <article class="rounded shadow pin">
+                                <div class="mw-100 overflow-hidden">
+                                    <a href="{{ path('app_pin_show', {id: pin.id}) }}">
+                                        <img class="w-100 rounded-top" src="{{ vich_uploader_asset(pin) | imagine_filter('square_thumbnail_md') }}" alt="{{ pin.title }}" />
+                                    </a>
+                                </div>
+                                <h2 class="pl-3"><a href="{{ path('app_pin_show', {id: pin.id}) }}" class="h5 text-secondary text-decoration-none">{{ pin.title }}</a></h2>
+                                <p class="pl-3 pb-3"><small class="text-muted">Submitted by [AUTHOR]</small></p>
+                                {#<p>Submitted {{pin.createdAt|ago}}</p> // using knplabs/knp-time-bundle #}
+                            </article>
+                        </div>
+                    {% endfor %}
+                </div>
             {% endfor %}
+            </div>
         {% else %}
-            <h1>No pins</h1>
+            <h1>No pins yet, <a href="{{ path('app_pin_create') }}">be the first</a></h1>
         {% endif %}
     </div>
 {% endblock %}
