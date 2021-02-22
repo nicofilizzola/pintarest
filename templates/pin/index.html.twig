@@ -8,10 +8,10 @@
             <h1 class="text-muted text-center">{{ is_plural(allPins|length, 'Pin') }}</h1>
             <div class="mt-3">
             {% for row in allPins|batch(3) %}
-                <div class="row">
-                    {% for pin in allPins %}
+                <div class="row mt-2">
+                    {% for pin in row %}
                         <div class="col-md-4">
-                            <article class="rounded shadow pin">
+                            <article class="rounded shadow pin bg-white">
                                 <div class="mw-100 overflow-hidden">
                                     <a href="{{ path('app_pin_show', {id: pin.id}) }}">
                                         <img class="w-100 rounded-top" src="{{ vich_uploader_asset(pin) | imagine_filter('square_thumbnail_md') }}" alt="{{ pin.title }}" />
