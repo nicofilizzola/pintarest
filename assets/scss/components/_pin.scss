@@ -1,7 +1,7 @@
 .pin{
     img{
         &:hover{
-            transform: scale(1.025);
+            transform: scale(1.05);
         }
         transition: $defaultTransition;
     }

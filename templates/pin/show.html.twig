@@ -4,14 +4,24 @@
 
 {% block body %}
     <div class="container">
-        <article class="my-5">
-            <h1>{{ pin.title }}</h1>
-            <p>{{ pin.description }}</p>
-        </article>
-        <p>
-            <a href="{{ path('app_pin_edit', {id: pin.id}) }}">Edit</a> | 
-            <a href="#" onclick="event.preventDefault(); confirm('Are you sure about that?') && document.querySelector('#js-delete-pin').submit();">Delete</a>
-        </p>
+        <div class="my-5">
+            <div class="col-md-12">
+                <article class="rounded shadow pin bg-white">
+                    <div class="mw-100 overflow-hidden rounded-top">
+                        <a href="{{ path('app_pin_show', {id: pin.id}) }}">
+                            <img class="w-100" src="{{ vich_uploader_asset(pin) | imagine_filter('square_thumbnail_md') }}" alt="{{ pin.title }}" />
+                        </a>
+                    </div>
+                    <div class="pb-3 pl-3 pt-3">
+                        <h2><a href="{{ path('app_pin_show', {id: pin.id}) }}" class="h5 text-secondary text-decoration-none">{{ pin.title }}</a></h2>
+                        <p>{{ pin.description }}</p>
+                        <p><small class="text-muted">Submitted {{ pin.createdAt|ago }} by [AUTHOR]</small></p>
+                        <a class="btn btn-success" href="{{ path('app_pin_edit', {id: pin.id}) }}">Edit</a>
+                        <a class="btn btn-danger" href="#" onclick="event.preventDefault(); confirm('Are you sure about that?') && document.querySelector('#js-delete-pin').submit();">Delete</a>
+                    </div>
+                </article>
+            </div>
+        </div>
     </div>
     
 
