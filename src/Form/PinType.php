@@ -15,12 +15,12 @@ class PinType extends AbstractType
         $builder
             ->add('imageFile', VichImageType::class, [
                 'required' => true,
-                //'allow_delete' => true,
+                'allow_delete' => false,
                 //'delete_label' => 'Delete this image',
                 //'download_label' => 'Download this image',
-                //'download_uri' => true,
-                //'image_uri' => true,
-                //'imagine_pattern' => '...',
+                'download_uri' => false,
+                'image_uri' => false,
+                'imagine_pattern' => 'square_thumbnail_md',
                 'asset_helper' => true,
                 'label' => 'Insert your image here...'
             ])

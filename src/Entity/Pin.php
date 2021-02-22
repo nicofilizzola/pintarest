@@ -46,12 +46,15 @@ class Pin
     private $imagePath;
 
     /**
-     * @Assert\NotBlank(message="No image? What do you think you're doing exactly?")
+     * @Assert\NotNull(message="No image? What do you think you're doing exactly?")
+     * @Assert\File(maxSize="2M")
+     * @Assert\File(mimeTypes="image/jpeg")
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
      * @Vich\UploadableField(mapping="pin_path", fileNameProperty="imagePath")
      * 
      * @var File|null
+     * 
      */
     private $imageFile;    
 

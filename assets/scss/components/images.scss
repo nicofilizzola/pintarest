@@ -1,0 +1,8 @@
+.vich-image{
+    img{
+        @extend .rounded;
+        @extend .shadow;
+        @extend .img-thumbnail;
+        @extend .my-2;
+    }
+}

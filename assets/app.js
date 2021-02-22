@@ -10,5 +10,15 @@ import './scss/main.scss';
 
 // start the Stimulus application
 //import './bootstrap';
-import 'bootstrap';
-import $ from 'jquery';
+//import 'bootstrap';
+//import $ from 'jquery';
+const $ = require('jquery');
+require('bootstrap');
+
+/*
+ * APP
+ */
+$('.vich-image .custom-file-input').on('change', function(event){
+    var fileInput = event.currentTarget;
+    $(fileInput).parent().find('label').html(fileInput.files[0].name);
+})
