@@ -14,12 +14,12 @@
                             <article class="rounded shadow pin bg-white">
                                 <div class="mw-100 overflow-hidden rounded-top">
                                     <a href="{{ path('app_pin_show', {id: pin.id}) }}">
-                                        <img class="w-100" src="{{ vich_uploader_asset(pin) | imagine_filter('square_thumbnail_md') }}" alt="{{ pin.title }}" />
+                                        <img class="w-100" src="{{ pin.imagePath ? vich_uploader_asset(pin) : asset('images/placeholder.jpg') | imagine_filter('square_thumbnail_md') }}" alt="{{ pin.title }}" />
                                     </a>
                                 </div>
-                                <div class="pl-3 py-1">
+                                <div class="p-3">
                                     <h2><a href="{{ path('app_pin_show', {id: pin.id}) }}" class="h5 text-secondary text-decoration-none">{{ pin.title }}</a></h2>
-                                    <p><small class="text-muted">Submitted by [AUTHOR]</small></p>
+                                    <p><small class="text-muted">Submitted by {{ pin.user.fullName }}</small></p>
                                 </div>
                             </article>
                         </div>
@@ -28,7 +28,7 @@
             {% endfor %}
             </div>
         {% else %}
-            <h1>No pins yet, <a href="{{ path('app_pin_create') }}">be the first</a></h1>
+            <h1 class="text-center">No pins yet, <a href="{{ path('app_pin_create') }}">be the first</a></h1>
         {% endif %}
     </div>
 {% endblock %}

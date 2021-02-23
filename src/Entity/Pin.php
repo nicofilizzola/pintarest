@@ -8,6 +8,7 @@ use App\Entity\Traits\Timestampable;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass=PinRepository::class)
@@ -46,7 +47,6 @@ class Pin
     private $imagePath;
 
     /**
-     * @Assert\NotNull(message="No image? What do you think you're doing exactly?")
      * @Assert\File(maxSize="2M")
      * @Assert\File(mimeTypes="image/jpeg")
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
@@ -56,7 +56,13 @@ class Pin
      * @var File|null
      * 
      */
-    private $imageFile;    
+    private $imageFile;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="pins")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;    
 
     public function getId(): ?int
     {
@@ -122,5 +128,17 @@ class Pin
     public function getImageFile(): ?File
     {
         return $this->imageFile;
+    }
+
+    public function getUser(): ?user
+    {
+        return $this->user;
+    }
+
+    public function setUser(?user $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
