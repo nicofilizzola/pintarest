@@ -3,21 +3,22 @@
 {#{% block title %}Hello PinController!{% endblock %}#}
 
 {% block body %}
-    <div class="col-md-12">
-        <article class="rounded shadow pin bg-white">
-            <div class="mw-100 overflow-hidden rounded-top">
-                <img class="w-100" src="{{ pin.imagePath ? vich_uploader_asset(pin) : asset('images/placeholder.jpg') | imagine_filter('square_thumbnail_md') }}" alt="{{ pin.title }}" />
-            </div>
-            <div class="p-3">
-                <h1 class="h5 text-secondary text-decoration-none">{{ pin.title }}</h1>
-                <p class="text-break">{{ pin.description }}</p>
-                <p><small class="text-muted">Submitted {{ pin.createdAt|ago }} by {{ pin.user.fullName }}</small></p>
-                <a class="btn btn-success" href="{{ path('app_pin_edit', {id: pin.id}) }}">Edit</a>
-                <a class="btn btn-danger" href="#" onclick="event.preventDefault(); confirm('Are you sure about that?') && document.querySelector('#js-delete-pin').submit();">Delete</a>
-            </div>
-        </article>
+    <div class="row mt-5">
+        <div class="col-md-6 mx-auto">
+            <article class="rounded shadow pin bg-white">
+                <div class="mw-100 overflow-hidden rounded-top">
+                    <img class="w-100" src="{{ pin.imagePath ? vich_uploader_asset(pin) : asset('images/placeholder.jpg') | imagine_filter('square_thumbnail_md') }}" alt="{{ pin.title }}" />
+                </div>
+                <div class="p-3">
+                    <h1 class="h5 text-secondary text-decoration-none">{{ pin.title }}</h1>
+                    <p class="text-break">{{ pin.description }}</p>
+                    <p><small class="text-muted">Submitted {{ pin.createdAt|ago }} by {{ pin.user.fullName }}</small></p>
+                    <a class="btn btn-success" href="{{ path('app_pin_edit', {id: pin.id}) }}">Edit</a>
+                    <a class="btn btn-danger" href="#" onclick="event.preventDefault(); confirm('Are you sure about that?') && document.querySelector('#js-delete-pin').submit();">Delete</a>
+                </div>
+            </article>
+        </div>
     </div>
-    
 
     <form id="js-delete-pin" display="none" action="{{ path('app_pin_delete', {id: pin.id}) }}" method="post">
         <input type="hidden" name="_token" value="{{ csrf_token('app_pin_delete' ~ pin.id) }}">
