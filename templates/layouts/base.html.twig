@@ -16,9 +16,7 @@
     <body>
         {% include "layouts/partials/_nav.html.twig" %}
         {% include "layouts/partials/_flashMessages.html.twig" %}
-        <div class="container m-5">
         {% block body %}{% endblock %}
-        </div>
         {% include "layouts/partials/_footer.html.twig" %}
 
         {% block javascripts %}

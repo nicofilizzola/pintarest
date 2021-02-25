@@ -3,8 +3,9 @@
 {#{% block title %}Hello PinController!{% endblock %}#}
 
 {% block body %}
-    <h1>Edit Pin #{{ pin.id }}</h1>
-    {{ include('layouts/partials/_form.html.twig', {submitBtnTxt: 'Edit pin'}) }}
-    
+    <div class="container m-5">
+        <h1>Edit Pin #{{ pin.id }}</h1>
+        {{ include('layouts/partials/_form.html.twig', {submitBtnTxt: 'Edit pin'}) }}
+    </div>
 
 {% endblock %}
