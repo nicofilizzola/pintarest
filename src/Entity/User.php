@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\Traits\Timestampable;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -25,6 +27,8 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @Assert\NotBlank(message="An email adress is required")
+     * @Assert\Email(message="Invalid email")
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
@@ -42,18 +46,26 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Please enter your first name")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Please enter your last name")
      */
     private $lastName;
 
     /**
      * @ORM\OneToMany(targetEntity=Pin::class, mappedBy="user", orphanRemoval=true)
+     * @Assert\NotBlank(message="what is you doing nigg?")
      */
     private $pins;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
 
     public function __construct()
     {
@@ -198,5 +210,17 @@ class User implements UserInterface
     // CUSTOM
     public function getFullName(){
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
     }
 }

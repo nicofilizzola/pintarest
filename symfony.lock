@@ -570,6 +570,9 @@
     "symfony/yaml": {
         "version": "v5.2.3"
     },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.2.0"
+    },
     "theofidry/psysh-bundle": {
         "version": "4.3.0"
     },
