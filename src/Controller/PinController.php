@@ -49,31 +49,36 @@ class PinController extends AbstractController
      */
     public function create(Request $req): Response
     {
-        $pin = new Pin;
-        /*$form = $this->createFormBuilder($pin)
-            ->add('title')
-            ->add('description')
-            ->setMethod('PUT')
-            ->setAction('whatever.com')
-            ->getForm()
-        ;*/
-        $form = $this->createForm(PinType::class, $pin);
-        $form->handleRequest($req);
+        if ($this->getUser()){
+            $pin = new Pin;
+            /*$form = $this->createFormBuilder($pin)
+                ->add('title')
+                ->add('description')
+                ->setMethod('PUT')
+                ->setAction('whatever.com')
+                ->getForm()
+            ;*/
+            $form = $this->createForm(PinType::class, $pin);
+            $form->handleRequest($req);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $pin->setUser($this->getUser());
-            //$data = $form->getData();
-            $this->em->persist($pin);
-            $this->em->flush();
-            
-            $this->addFlash('success', 'The pin was successfully created');
-            return $this->redirectToRoute('app_home');
-        } else {
-            return $this->render(
-                'pin/create.html.twig',
-                ['form' => $form->createView()]
-            );
-        }        
+            if($form->isSubmitted() && $form->isValid()){
+                $pin->setUser($this->getUser());
+                //$data = $form->getData();
+                $this->em->persist($pin);
+                $this->em->flush();
+                
+                $this->addFlash('success', 'The pin was successfully created');
+                return $this->redirectToRoute('app_home');
+            } else {
+                return $this->render(
+                    'pin/create.html.twig',
+                    ['form' => $form->createView()]
+                );
+            }   
+        }
+
+        $this->addFlash('warning', 'You must sign in to create a pin');
+        return $this->redirectToRoute('app_login');
     }
 
     /**
@@ -81,25 +86,30 @@ class PinController extends AbstractController
      */
     public function edit(Pin $pin, Request $req): Response
     {
-        $form = $this->createForm(PinType::class, $pin, [
-            'method' => 'PUT'
-        ]);
-        $form->handleRequest($req);
+        if ($this->getUser()->getId() == $pin->getUser()->getId()){
+            $form = $this->createForm(PinType::class, $pin, [
+                'method' => 'PUT'
+            ]);
+            $form->handleRequest($req);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $data = $form->getData();
-            $this->em->persist($pin);
-            $this->em->flush();
-            
-            $this->addFlash('success', 'The pin was successfully updated');
-            return $this->redirectToRoute('app_home');
-        } else {
-            return $this->render(
-                'pin/edit.html.twig',
-                ['form' => $form->createView(),
-                'pin' => $pin]
-            );
-        }   
+            if($form->isSubmitted() && $form->isValid()){
+                $data = $form->getData();
+                $this->em->persist($pin);
+                $this->em->flush();
+                
+                $this->addFlash('success', 'The pin was successfully updated');
+                return $this->redirectToRoute('app_home');
+            } else {
+                return $this->render(
+                    'pin/edit.html.twig',
+                    ['form' => $form->createView(),
+                    'pin' => $pin]
+                );
+            }  
+        } 
+
+        $this->addFlash('warning', 'You can\'t edit that pin.');
+        return $this->redirectToRoute('app_home');
     }
 
     /**
@@ -107,14 +117,19 @@ class PinController extends AbstractController
      */
     public function delete(Pin $pin, Request $req): Response
     {
-        if ($this->isCsrfTokenValid('app_pin_delete' . $pin->getId(), $req->request->get('_token'))) {
-            $this->em->remove($pin);
-            $this->em->flush();
+        if ($this->getUser()->getId() == $pin->getUser()->getId()){
+            if ($this->isCsrfTokenValid('app_pin_delete' . $pin->getId(), $req->request->get('_token'))) {
+                $this->em->remove($pin);
+                $this->em->flush();
 
-            $this->addFlash('success', 'The pin was successfully deleted');
-            return $this->redirectToRoute('app_home');
+                $this->addFlash('success', 'The pin was successfully deleted');
+                return $this->redirectToRoute('app_home');
+            }
         }
-        
+
+        // Useless because GET route isn't allowed on the app_pin_delete route
+        // $this->addFlash('warning', 'You can\'t delete that pin.');
+        // return $this->redirectToRoute('app_home');
     }
     
 }

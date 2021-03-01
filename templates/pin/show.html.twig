@@ -13,16 +13,19 @@
                     <h1 class="h5 text-secondary text-decoration-none">{{ pin.title }}</h1>
                     <p class="text-break">{{ pin.description }}</p>
                     <p><small class="text-muted">Submitted {{ pin.createdAt|ago }} by {{ pin.user.fullName }}</small></p>
+
+                    {% if app.user == pin.user %}
                     <a class="btn btn-success" href="{{ path('app_pin_edit', {id: pin.id}) }}">Edit</a>
                     <a class="btn btn-danger" href="#" onclick="event.preventDefault(); confirm('Are you sure about that?') && document.querySelector('#js-delete-pin').submit();">Delete</a>
+                    <form id="js-delete-pin" display="none" action="{{ path('app_pin_delete', {id: pin.id}) }}" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token('app_pin_delete' ~ pin.id) }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                    </form>
+                    {% endif %}
+
                 </div>
             </article>
         </div>
     </div>
-
-    <form id="js-delete-pin" display="none" action="{{ path('app_pin_delete', {id: pin.id}) }}" method="post">
-        <input type="hidden" name="_token" value="{{ csrf_token('app_pin_delete' ~ pin.id) }}">
-        <input type="hidden" name="_method" value="DELETE">
-    </form>
     
 {% endblock %}
