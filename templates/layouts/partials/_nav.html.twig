@@ -9,25 +9,30 @@
                 <ul class="navbar-nav ml-auto">
                     {% if app.user %}
                         <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_pin_create') }}">New pin</a>
+                            <a class="nav-link" href="{{ path('app_pin_create') }}">New pin</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="#">Account</a>
+                            <a class="nav-link" href="#">Account</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_logout') }}" >Logout</a>
+                            <a class="nav-link" href="#" onclick="event.preventDefault(); document.querySelector('#js-logout-form').submit();">Logout</a>
+                            <form action="{{ path('app_logout') }}" method="POST" id="js-logout-form" style="display: none">
+                                <input type="hidden" value="{{ csrf_token('logout') }}" name="_csrf_token">
+                            </form>
                         </li>
+
+                        
+
                     {% else %}
                         <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                            <a class="nav-link" href="{{ path('app_login') }}">Login</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_register') }}">Sign up</a>
+                            <a class="nav-link" href="{{ path('app_register') }}">Sign up</a>
                         </li> 
                     {% endif %}
                 </ul>
             </div>
-            
         </div>
     </nav>
 </header>
