@@ -86,20 +86,26 @@ class PinController extends AbstractController
      */
     public function edit(Pin $pin, Request $req): Response
     {
+        // Verify user
         if ($this->getUser()->getId() == $pin->getUser()->getId()){
+            // Get form type
             $form = $this->createForm(PinType::class, $pin, [
                 'method' => 'PUT'
             ]);
             $form->handleRequest($req);
 
+            // If form submitted
             if($form->isSubmitted() && $form->isValid()){
-                $data = $form->getData();
+                // Send to DB and redirect
                 $this->em->persist($pin);
                 $this->em->flush();
                 
                 $this->addFlash('success', 'The pin was successfully updated');
                 return $this->redirectToRoute('app_home');
+            
+            // If form not sent
             } else {
+                // Render form view
                 return $this->render(
                     'pin/edit.html.twig',
                     ['form' => $form->createView(),
@@ -108,6 +114,7 @@ class PinController extends AbstractController
             }  
         } 
 
+        // If incorrect user
         $this->addFlash('warning', 'You can\'t edit that pin.');
         return $this->redirectToRoute('app_home');
     }
@@ -117,8 +124,11 @@ class PinController extends AbstractController
      */
     public function delete(Pin $pin, Request $req): Response
     {
+        // Verify user
         if ($this->getUser()->getId() == $pin->getUser()->getId()){
+            // CSRF Validation
             if ($this->isCsrfTokenValid('app_pin_delete' . $pin->getId(), $req->request->get('_token'))) {
+                // Delete pin
                 $this->em->remove($pin);
                 $this->em->flush();
 
